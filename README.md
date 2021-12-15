@@ -1,4 +1,4 @@
-# An application to run a QA analysis of AAMCC or DCM root files
+# QA tool analysis of AAMCC or DCM root files
 
 1. Create build folder in aamcc_to_mcini
 2. cd build
