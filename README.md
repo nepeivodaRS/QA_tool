@@ -4,14 +4,14 @@
 2. cd build
 3. cmake ..
 4. make
-5. copy these files to the build folder
-  1) aamcc.png
-  2) AAMCC_run.py
-  3) QA_script
-  to the build folder
-6. change in QA_script
-  1) PathToMcini
-  2) PathToDcmAamcc
-  3) PathToQA
+5. Copy these files
+    * aamcc.png
+    * AAMCC_run.py
+    * QA_script
+  from main flder to the build folder you created on step 1
+6. Change in QA_script
+    * PathToMcini
+    * PathToDcmAamcc
+    * PathToQA
   to your system paths 
 8. python ./AAMCC_run.py
