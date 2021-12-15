@@ -8,10 +8,14 @@
     * aamcc.png
     * AAMCC_run.py
     * QA_script
-  from main flder to the build folder you created on step 1
+
+from the main folder to the build folder you created on step 1
+
 6. Change in QA_script
     * PathToMcini
     * PathToDcmAamcc
     * PathToQA
-  to your system paths 
+
+to your system paths 
+
 8. python ./AAMCC_run.py
