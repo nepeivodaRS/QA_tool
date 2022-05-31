@@ -66,18 +66,34 @@ class Window:
             self.bar.insert(0, '.root file was not selected')
     def processQA(self):
             if (self.var.get() == 0):
-                for i in self.file:
-                    file_extension = os.path.splitext(i)[1]
-                    if (file_extension == ".root"):
+                if ((len(self.file)) == 1):
+                    for i in self.file:
                         file_extension = os.path.splitext(i)[1]
-                        sub.call(['./QA_script', Path(i).stem, str(self.var.get()), str(1)])
-                        self.text.insert(1.0, Path(i).stem + ".root" + " done 100%" + "\t\n")
-                    else:
-                        self.bar.delete(0, 'end')
-                        self.bar.insert(0, 'BAD FILE')
-                        self.text.delete('1.0', END)
-                        self.text.insert(1.0, "please select files again, bad file was found")
-                        break;
+                        if (file_extension == ".root"):
+                            file_extension = os.path.splitext(i)[1]
+                            sub.call(['./QA_script', Path(i).stem, str(self.var.get()), str(1)])
+                            self.text.insert(1.0, Path(i).stem + ".root" + " done 100%" + "\t\n")
+                        else:
+                            self.bar.delete(0, 'end')
+                            self.bar.insert(0, 'BAD FILE')
+                            self.text.delete('1.0', END)
+                            self.text.insert(1.0, "please select files again, bad file was found")
+                            break;
+                else:
+                    for i in self.file:
+                        file_extension = os.path.splitext(i)[1]
+                        if (file_extension == ".root"):
+                            file_extension = os.path.splitext(i)[1]
+                            sub.call(['./mult_aamcc_to_mcini', Path(i).stem, str(1)])
+                            self.text.insert(1.0, Path(i).stem + ".root" + " done 100%" + "\t\n")
+                        else:
+                            self.bar.delete(0, 'end')
+                            self.bar.insert(0, 'BAD FILE')
+                            self.text.delete('1.0', END)
+                            self.text.insert(1.0, "please select files again, bad file was found")
+                            break;
+                    sub.call(['./mult_pdf', str(len(self.file))])
+
             else:
                 for i in self.file:
                     file_extension = os.path.splitext(i)[1]

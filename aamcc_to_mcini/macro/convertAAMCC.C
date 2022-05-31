@@ -17,8 +17,8 @@
 //R__LOAD_LIBRARY(libMcIniData.so)
 
 void convertAAMCC(TString inputFileName = "particles.root", TString outputFileName = "mcini_aamcc.root", Bool_t only_not_empty = true,
-	Int_t aProj = 197, Int_t zProj = 79, Double_t pProj = 12.,
-	Int_t aTarg = 197, Int_t zTarg = 79, Double_t pTarg = 0.,
+	Int_t aProj = -1, Int_t zProj = -1, Double_t pProj = -1, Double_t KinEn_in = -1,
+	Int_t aTarg = -1, Int_t zTarg = -1, Double_t pTarg = -1,
 	Double_t bMin = 0., Double_t bMax = 20., Int_t bWeight = 0,
 	Double_t phiMin = 0., Double_t phiMax = 0.,
 	Double_t sigma = 0., Int_t nEvents = 0)
@@ -38,10 +38,10 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 		return;
 	}
 
-	std::vector<Double_t>* MassOnSideA = 0;
-	std::vector<Double_t>* MassOnSideB = 0;
-	std::vector<Double_t>* ChargeOnSideA = 0;
-	std::vector<Double_t>* ChargeOnSideB = 0;
+	std::vector<float>* MassOnSideA = 0;
+	std::vector<float>* MassOnSideB = 0;
+	std::vector<float>* ChargeOnSideA = 0;
+	std::vector<float>* ChargeOnSideB = 0;
 	std::vector<Double_t>* pXonSideA = 0;
 	std::vector<Double_t>* pYonSideA = 0;
 	std::vector<Double_t>* pZonSideA = 0;
@@ -61,7 +61,7 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 	fTreeG->SetBranchAddress("Z_on_A", &ChargeOnSideA);
 	fTreeG->SetBranchAddress("Z_on_B", &ChargeOnSideB);
 	fTreeG->SetBranchAddress("impact_parameter", &b);
-	//fTreeG->SetBranchAddress("NpartA", &Npart);
+	fTreeG->SetBranchAddress("Npart", &Npart);
 	fTreeG->SetBranchAddress("Ncoll", &Ncoll);
 	fTreeG->SetBranchAddress("pX_on_A", &pXonSideA);
 	fTreeG->SetBranchAddress("pY_on_A", &pYonSideA);
@@ -72,13 +72,19 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 	fTreeG->SetBranchAddress("Ecc", &Ecc);
 
 	fTreeC->SetBranchAddress("Xsect_total", &sigma);
+	fTreeC->SetBranchAddress("pZ_in_MeV_on_A", &pProj);
+	fTreeC->SetBranchAddress("pZ_in_MeV_on_B", &pTarg);
 	fTreeC->SetBranchAddress("Mass_on_A", &AonA);
 	fTreeC->SetBranchAddress("Mass_on_B", &AonB);
 	fTreeC->SetBranchAddress("Charge_on_A", &ZonA);
 	fTreeC->SetBranchAddress("Charge_on_B", &ZonB);
-	fTreeC->SetBranchAddress("Kinetic_energy_per_nucleon_of_projectile_in_GeV", &pProj);
+	fTreeC->SetBranchAddress("Kinetic_energy_per_nucleon_of_projectile_in_GeV", &KinEn_in);
 
 	fTreeC->GetEntry(0);
+
+	// In AGeV
+	pProj*= pow(10, -3)/(AonA);
+	pTarg*= pow(10, -3)/(AonB);
 
 	aProj = AonA; zProj = ZonA; aTarg = AonB; zTarg = ZonB;
 
@@ -105,7 +111,7 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 		// Fill event
 		event->SetEventNr(id);
 		event->SetB(b);
-		event->SetEcc(Ecc);
+		// event->SetEcc(Ecc);
 		event->SetPhi(0.);
 		event->SetNes(1);
 		event->SetStepNr(0);

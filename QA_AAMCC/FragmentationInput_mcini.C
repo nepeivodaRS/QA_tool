@@ -4,20 +4,33 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
 {
 
 	TChain* fChain=new TChain("events");
+    TChain* ReadFile = new TChain("Glauber");
+    TChain* ReadFile2 = new TChain("MST-Clusters");
     // flag_dcm is set to 1 if QA is performed for dcmqgsm files
     if(flag_dcm == 0){ 
-        fChain->Add((input_path_mcini));
+        if(files == 1){
+            fChain->Add((input_path_mcini));
+            ReadFile->Add((input_path_aamcc));
+            ReadFile2->Add((input_path_aamcc));
+        }
+        else{
+            for (int i = 1; i <= files; i++) {
+                fChain->Add(Form("%s/%d_mcini.root", input_path_mcini, i));
+                ReadFile->Add(Form("%s/%d.root", input_path_aamcc, i));
+                ReadFile2->Add(Form("%s/%d.root", input_path_aamcc, i));
+            }
+        }
     }
     else
     {
-        for (int i = 1; i <= files; i++) {fChain->Add(Form("%s/dcmqgsm_%d.root", input_path_mcini, i));}      
+        for (int i = 1; i <= files; i++) {fChain->Add(Form("%s/dcmqgsm_%d.root", input_path_mcini, i));}
+        ReadFile->Add(Form("%s", input_path_aamcc)); 
+        ReadFile2->Add(Form("%s", input_path_aamcc));
     }
-    
-    TFile* ReadFile = new TFile(input_path_aamcc);
 
-    std::vector<Double_t>* MassOnSideA = 0;
+    std::vector<float>* MassOnSideA = 0;
     //std::vector<Double_t>* MassOnSideB = 0;
-    std::vector<Double_t>* ChargeOnSideA = 0;
+    std::vector<float>* ChargeOnSideA = 0;
     // std::vector<Double_t>* ChargeOnSideB = 0;
     std::vector<Double_t>* pXonSideA = 0;
     std::vector<Double_t>* pYonSideA = 0;
@@ -28,27 +41,26 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     Float_t b, ExEn;
     Double_t crd;
 
-    TTree *tree = (TTree*) ReadFile->Get("Glauber");  
-    tree->SetBranchAddress("A_on_A", &MassOnSideA);
+    //TTree *tree = (TTree*) ReadFile->GetTree("Glauber");  
+    ReadFile->SetBranchAddress("A_on_A", &MassOnSideA);
     //tree->SetBranchAddress("A_on_B", &MassOnSideB);
-    tree->SetBranchAddress("Z_on_A", &ChargeOnSideA); 
+    ReadFile->SetBranchAddress("Z_on_A", &ChargeOnSideA); 
     // tree->SetBranchAddress("Z_on_B", &ChargeOnSideB);
-    tree->SetBranchAddress("pX_on_A", &pXonSideA);
-    tree->SetBranchAddress("pY_on_A", &pYonSideA);
-    tree->SetBranchAddress("pZ_on_A", &pZonSideA);
+    ReadFile->SetBranchAddress("pX_on_A", &pXonSideA);
+    ReadFile->SetBranchAddress("pY_on_A", &pYonSideA);
+    ReadFile->SetBranchAddress("pZ_on_A", &pZonSideA);
     // tree->SetBranchAddress("pX_on_B", &pXonSideB);
     // tree->SetBranchAddress("pY_on_B", &pYonSideB);
     // tree->SetBranchAddress("pZ_on_B", &pZonSideB);
     if(flag_dcm == 0){
-        tree->SetBranchAddress("Ex_En_per_nucleon", &ExEn
-            );
+        ReadFile->SetBranchAddress("Ex_En_per_nucleon", &ExEn);
     }
-    tree->SetBranchAddress("impact_parameter", &b);
+    ReadFile->SetBranchAddress("impact_parameter", &b);
 
-    TTree *tree1 = nullptr;
+    //TTree *ftree1 = nullptr;
     if(flag_dcm == 0){
-        tree1 = (TTree*) ReadFile->Get("MST-Clusters"); //MST: Clusters info 
-        tree1->SetBranchAddress("d", &crd);
+        //tree1 = (TTree*) ReadFile->GetTree("MST-Clusters"); //MST: Clusters info 
+        ReadFile2->SetBranchAddress("d", &crd);
     }
 
     cout<<"Number of entries equal "<<fChain->GetEntries()<<endl;
@@ -56,7 +68,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     EventInitialState* fIniState = new EventInitialState;
 	fChain->SetBranchAddress("event", &fEvent); 
     fChain->SetBranchAddress("iniState", &fIniState); 
-    gStyle -> SetOptStat(1000000001);
+    gStyle -> SetOptStat(111111111);
     gStyle -> SetStatX (0.3);
 
     
@@ -77,44 +89,44 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hEcc4_vs_B =                new TH2F ("Ecc4_VS_B", ";#epsilon_{4};B, fm",200,0,1,200,0,20);*/
     
     TH1F* hNfrag =                              new TH1F("A_Fragments",";A_{fr};counts",200,0,200);
-    TH1F* hEnergy =                             new TH1F("Energy",";E_{event}, GeV;counts",300,0,2500);
-    TH1F* hP =                                  new TH1F("P",";P/A, GeV/c;counts",400,6,20);
-    TH1F* hPz =                                 new TH1F("P_z",";Pz/A, GeV/c;counts",400,6,20);
-    TH1F* hPTnucl =                             new TH1F("Pt_nucl",";P_{t} for nucleons, GeV/c;counts",100,0,0.5);
+    TH1F* hEnergy =                             new TH1F("Energy",";E_{event}, GeV;counts",300,0,250);
+    TH1F* hP =                                  new TH1F("P",";P/A, GeV/c;counts",400,0,2);
+    TH1F* hPz =                                 new TH1F("P_z",";Pz/A, GeV/c;counts",400,0,1.6);
+    TH1F* hPTnucl =                             new TH1F("Pt_nucl",";P_{t} for nucleons, GeV/c;counts",100,0,0.6);
     TH2F* hPT_vs_A =                            new TH2F("Pt_vs_A",";P_{t}, GeV/c;A",100,0,4,197,0,197);
-    TH2F* hPz_vs_A =                            new TH2F("Pz_vs_A",";P_{z}/A, GeV/c;A",140,6,20,197,0,197);
-    TH2F* hP_vs_A =                             new TH2F("P_vs_A",";P/A, GeV/c;A",140,6,20,197,0,197);
+    TH2F* hPz_vs_A =                            new TH2F("Pz_vs_A",";P_{z}/A, GeV/c;A",140,0.2,1.4,197,0,197);
+    TH2F* hP_vs_A =                             new TH2F("P_vs_A",";P/A, GeV/c;A",140,0.2,1.4,197,0,197);
     TH1F* hPznucl =                             new TH1F("P_z_nucleons",";Pz/A, GeV/c;counts",400,6,20);
     TH1F* hPnucl =                              new TH1F("P_nucleons",";Pz/A, GeV/c;counts",400,6,20);
     TH1F* hPimf =                               new TH1F("P_imf",";P/A, GeV/c;counts",400,6,20);
     TH1F* hPheavy =                             new TH1F("P_heavy",";P/A, GeV/c;counts",400,6,20);
     TH1F* hPzimf =                              new TH1F("P_z_imf",";Pz/A, GeV/c;counts",400,6,20);
     TH1F* hPzheavy =                            new TH1F("P_z_heavy",";Pz/A, GeV;counts",400,6,20);
-    TH1F* hRapidity =                           new TH1F("Y_nucleon",";Rapidity;counts",500,2.8,3.8);
-    TH1F* hPseudoRapidity =                     new TH1F("Eta",";Pseudorapidity;counts",180,2,14);
+    TH1F* hRapidity =                           new TH1F("Y_nucleon",";Rapidity;counts",500,0,1.5);
+    TH1F* hPseudoRapidity =                     new TH1F("Eta",";Pseudorapidity;counts",180,0,15);
     TH1F* hPseudoRapidityAll =                  new TH1F("Eta_all",";Pseudorapidity: target+projectile;counts",280,-14,14);
-    TH1F* hPseudoRapidity_nucl =                new TH1F("Eta_nucl",";Pseudorapidity (Z=1);counts",180,2,14);
+    TH1F* hPseudoRapidity_nucl =                new TH1F("Eta_nucl",";Pseudorapidity (Z=1);counts",180,0,13);
     TH2F* hNprotons_vs_Nneutrons =              new TH2F("Nprotons_VS_Nneutrons",";N in fragment;Z in fragment",120,0,120,80,0,80);
     TH2F* hNfrag_vs_ImpactParameter =           new TH2F("A_VS_B",";A_{fr};b, fm",200,0,200,200,0,20);
-    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",200,0,200,150,0,2500);
+    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",200,0,200,150,0,300);
     TH2F* hNfrag_vs_Energy_scaled =             new TH2F("A_VS_E_scaled",";A_{fr};E_{frag}-E_{beam}(A-1), GeV",200,0,200,150,-100,200);
-    TH2F* hNfrag_vs_Rapidity =                  new TH2F("A_VS_Y",";A_{fr};Rapidity",200,0,200,500,2.8,3.8);
-    TH2F* hImpactParameter_vs_Energy_Fragment = new TH2F("B_VS_E",";b, fm;E_{event}, GeV",200,0,20,250,0,2500);
-    TH2F* hImpactParameter_vs_Rapidity =        new TH2F("B_VS_Y",";b, fm;Rapidity",200,0,20,250,2.8,3.8);
-    TH2F* hRapidity_vs_Energy =                 new TH2F("Y_VS_E",";E, GeV;Rapidity",250,0,3500,250,2.8,3.8);
+    TH2F* hNfrag_vs_Rapidity =                  new TH2F("A_VS_Y",";A_{fr};Rapidity",200,0,200,500,0,1.5);
+    TH2F* hImpactParameter_vs_Energy_Fragment = new TH2F("B_VS_E",";b, fm;E_{event}, GeV",200,0,20,250,0,260);
+    TH2F* hImpactParameter_vs_Rapidity =        new TH2F("B_VS_Y",";b, fm;Rapidity",200,0,20,250,0,1.6);
+    TH2F* hRapidity_vs_Energy =                 new TH2F("Y_VS_E",";E, GeV;Rapidity",250,0,300,250,0,1.6);
     TH2F* hPseudoRapidity_vs_A =                new TH2F("Eta_VS_A",";Pseudorapidity;A",180,2,14,200,0,200);
     TH2F* hPx_vs_Py =                           new TH2F("Py_VS_Px",";Px, GeV;Py, GeV",200,-5,5,200,-4,4);
 
-    TH2F* hEnergyA_vs_ImpactParameter_proj =    new TH2F("EperA_VS_B_proj",";b, fm;E_{frag}/A, GeV",200,0,20,200,7,19);
-    TH2F* hNspect_vs_Espect_proj =              new TH2F("Espect_VS_Nspect_proj",";Nspect;Espect, GeV",100,0,100,150,0,3300);
+    TH2F* hEnergyA_vs_ImpactParameter_proj =    new TH2F("EperA_VS_B_proj",";b, fm;E_{frag}/A, GeV",200,0,20,200,0,2.5);
+    TH2F* hNspect_vs_Espect_proj =              new TH2F("Espect_VS_Nspect_proj",";Nspect;Espect, GeV",100,0,100,100,0,300);
     TH2F* hNspect_vs_sumZ_proj =                new TH2F("sumZ_VS_Nspect_proj",";sumZ;Nspect",80,0,80,110,0,110);
     TH2F* hNspect_vs_Zb2 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",80,0,80,100,0,100);
     TH2F* hNnucl_vs_Nfrag_proj =                new TH2F("Nnucl_vs_Nfrag_proj",";Nfrag;Nnucl",40,0,40,90,0,90);
 
-    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",80,0,80,175,0,3500);
-    TH2F* hEnergyE_vs_Nnucl_proj =              new TH2F("EnergyE_VS_Nnucl_proj",";Nnucl;E_{event}, GeV",90,0,90,175,0,3500);
-    TH2F* hEnergyE_vs_Nimf_proj =               new TH2F("EnergyE_VS_Nimf_proj",";N_{IMF};E_{event}, GeV",15,0,15,35,0,3500);
-    TH2F* hImpactParameter_vs_Energy  =         new TH2F("B_VS_Energy_proj",";b, fm;E_{event} (projectile), GeV",200,0,20,250,0,3000);
+    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",80,0,80,100,0,300);
+    TH2F* hEnergyE_vs_Nnucl_proj =              new TH2F("EnergyE_VS_Nnucl_proj",";Nnucl;E_{event}, GeV",90,0,90,175,0,300);
+    TH2F* hEnergyE_vs_Nimf_proj =               new TH2F("EnergyE_VS_Nimf_proj",";N_{IMF};E_{event}, GeV",15,0,15,35,0,300);
+    TH2F* hImpactParameter_vs_Energy  =         new TH2F("B_VS_Energy_proj",";b, fm;E_{event} (projectile), GeV",200,0,20,250,0,280);
 
     TH2F* hImpactParameter_vs_ExEn  =           new TH2F("B_VS_ExEn",";b, fm;E*/A_{pf}, MeV",200,0,20,250,0,12);
     TH2F* hImpactParameter_vs_d  =              new TH2F("B_VS_d",";b, fm; d, fm",200,0,20,200,1.,3.);
@@ -130,11 +142,12 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     Double_t px_beam, py_beam, pz_beam, E_beam;
     if (P_beam == 3) px_beam=0., py_beam=0., pz_beam=3.300000, E_beam=3.430721;
     else if (P_beam == 12) px_beam=0., py_beam=0., pz_beam=12.0, E_beam=12.036604;
+    else if (P_beam == 2) px_beam=0., py_beam=0., pz_beam=2.42, E_beam=2.5929059; // not important, not drawing (not used)
     else px_beam=0., py_beam=0., pz_beam=1.0, E_beam=1.372;
     TLorentzVector Beam(px_beam, py_beam, pz_beam, E_beam);
-    TLorentzVector Target(0., 0., 0, 0.938);
-    TLorentzRotation rTransform;
-    rTransform.Boost((Beam + Target).BoostVector()); 
+    TLorentzVector Target(-px_beam, -py_beam, -pz_beam, E_beam);
+    //TLorentzRotation rTransform;
+    //rTransform.Boost((Beam + Target).BoostVector()); 
             
 	for (long i = 0; i < lNEvents; i++)
 	{
@@ -280,10 +293,9 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
 		
 	}
-
-
-    for(int k = 0; k < tree->GetEntries(); k++){
-        tree->GetEntry(k);
+    
+    for(int k = 0; k < ReadFile->GetEntries(); k++){
+        ReadFile->GetEntry(k);
         int Nucl_T=0, Frag_T=0,Nucl_P=0, Frag_P=0, IMF_P=0, IMF_T=0, sumA_proj=0;
 
         for (Int_t ipart = 0; ipart < (MassOnSideA->size()); ipart++){
@@ -291,7 +303,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         }
         
         if(flag_dcm == 0){
-            tree1->GetEntry(k);
+            ReadFile2->GetEntry(k);
             hRelA_vs_ExEn -> Fill (ExEn, double(sumA_proj)/197.);
             hNspect_vs_ExEn -> Fill(MassOnSideA->size(), ExEn);
             hImpactParameter_vs_ExEn -> Fill(b, ExEn);

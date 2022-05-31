@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Beginning of QA calculations of multiple AAMCC files"
+
+# You have to change it for your system
+PathToQA="/home/gsi/QA_TOOL/QA_tool_Hades/QA_AAMCC"
+PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
+
+PathToMcini="/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini"
+PathToConverterMcini="$PathToMcini/macro/convertAAMCC.C"
+
+Impulse="2"
+MassNumber="197"
+
+echo "QA pdf calc START"
+string4="("0", \"$PathToMcini/output/first_run\",\"$PathToMcini/input/first_run\",\"$PathToQA/output\", \"fin.root\", \"/QA_run.pdf\", $1, $MassNumber, $Impulse)"
+root -l << EOF
+.L $PathToQAscript
+FragmentationInput_mcini$string4
+EOF
