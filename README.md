@@ -2,7 +2,7 @@
 
 1. Create build folder in aamcc_to_mcini
 2. cd build
-3. /home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/macro/config.sh
+3. $your_system_path/QA_TOOL/aamcc_to_mcini/macro/config.sh
 4. source root_6_20
 5. cmake ..
 6. make
