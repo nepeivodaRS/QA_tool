@@ -1,21 +1,14 @@
 # QA tool analysis of AAMCC or DCM root files
 
-1. Create build folder in aamcc_to_mcini
-2. cd build
-3. cmake ..
-4. make
-5. Copy these files
-    * aamcc.png
-    * AAMCC_run.py
-    * QA_script
+1. go to qa_exec folder
 
-from the main folder to the build folder you created on step 1
-
-6. Change in QA_script
+2. Change in QA_script
     * PathToMcini
     * PathToDcmAamcc
     * PathToQA
 
-to your system paths 
+to your system paths
 
-8. python ./AAMCC_run.py
+3. in converAAMCC.C change path to libMcIniData
+
+4. python3.9 AAMCC_run.py

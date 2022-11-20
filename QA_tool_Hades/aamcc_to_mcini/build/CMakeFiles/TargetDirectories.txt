@@ -1,5 +1,0 @@
-/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/build/CMakeFiles/G__McIniData.dir
-/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/build/CMakeFiles/McIniData.dir
-/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/build/CMakeFiles/JAMReader.dir
-/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/build/CMakeFiles/edit_cache.dir
-/home/gsi/QA_TOOL/QA_tool_Hades/aamcc_to_mcini/build/CMakeFiles/rebuild_cache.dir

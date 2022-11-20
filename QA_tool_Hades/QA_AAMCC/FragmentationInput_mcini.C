@@ -320,12 +320,12 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     char char_output_pdf[n + 1];
     strcpy(char_output_pdf, output_dirname_pdf.c_str());
 
-    string output_dirname_pdf_begin = output_dirname_pdf + "(";
+    string output_dirname_pdf_begin = output_dirname_pdf + "[";
     n = output_dirname_pdf_begin.length();
     char char_output_pdf_begin[n + 1];
     strcpy(char_output_pdf_begin, output_dirname_pdf_begin.c_str());
 
-    string output_dirname_pdf_end = output_dirname_pdf + ")";
+    string output_dirname_pdf_end = output_dirname_pdf + "]";
     n = output_dirname_pdf_end.length();
     char char_output_pdf_end[n + 1];
     strcpy(char_output_pdf_end, output_dirname_pdf_end.c_str());
@@ -339,47 +339,48 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     gPad->SetTickx();
     gPad->SetTicky();
     hImpactParameter                            ->Draw("COLZ");
-    canvas->Print(char_output_pdf_begin);
+    canvas->Print(char_output_pdf_begin,"pdf");
 
     gPad->SetLogz();
 
     
     hEnergyE_vs_sumZ_proj                       ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
     hEnergyE_vs_Nnucl_proj                      ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
     hEnergyE_vs_Nimf_proj                       ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
 
     gStyle -> SetOptStat(1000100001);
     hEnergyA_vs_ImpactParameter_proj            ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
 
     
     hNspect_vs_sumZ_proj                        ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
 
     hNspect_vs_Zb2                              ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
 
     
     hNspect_vs_Espect_proj                      ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
     //hNspect_vs_Espect_targ ->Draw("COLZ");
     //canvas->Print(output_dirname_pdf);
     gStyle -> SetOptStat(1000000001);
 
         hNnucl_vs_Nfrag_proj                    ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
 
    
     
     gPad->SetLogy();
     hNfrag                                      ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
     gPad->SetLogy(0);
     hEnergy                                     ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
+
     gPad->SetLogy();
     hP                                          ->Draw("");
     hPnucl -> SetLineColor(2);
@@ -399,11 +400,11 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     legend -> Draw();
 
 
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf,"pdf");
    
 
     hPTnucl                                     ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
 
     hPz                                         ->Draw("COLZ");
     hPznucl -> SetLineColor(2);
@@ -422,64 +423,64 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     legend1 -> Draw();
 
 
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
 
     hRapidity                                   ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hPseudoRapidity                             ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hPseudoRapidityAll                          ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hPseudoRapidity_nucl                        ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     gPad->SetLogy(0);
     hPT_vs_A                                    ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hPz_vs_A                                    ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hP_vs_A                                     ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hNprotons_vs_Nneutrons                      ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hNfrag_vs_ImpactParameter                   ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
 
     hNfrag_vs_Energy                            ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     //hNfrag_vs_Energy_scaled                   ->Draw("COLZ");
     //canvas->Print(output_dirname_pdf);
 
     hNfrag_vs_Rapidity                          ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
 
     hImpactParameter_vs_Energy                  ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
 
     hImpactParameter_vs_Energy_Fragment         ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hImpactParameter_vs_Rapidity                ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hRapidity_vs_Energy                         ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     hPx_vs_Py                                   ->Draw("COLZ");
-    canvas->Print(char_output_pdf);
+    canvas->Print(char_output_pdf, "pdf");
     if (flag_dcm == 0){
         hPseudoRapidity_vs_A                    ->Draw("COLZ");
-        canvas->Print(char_output_pdf);
+        canvas->Print(char_output_pdf, "pdf");
         hImpactParameter_vs_ExEn                ->Draw("COLZ");
-        canvas->Print(char_output_pdf);
+        canvas->Print(char_output_pdf, "pdf");
         hImpactParameter_vs_d                   ->Draw("COLZ");
-        canvas->Print(char_output_pdf);
+        canvas->Print(char_output_pdf, "pdf");
         hImpactParameter_vs_A                   ->Draw("COLZ");
-        canvas->Print(char_output_pdf);
+        canvas->Print(char_output_pdf, "pdf");
         hRelA_vs_ExEn                           ->Draw("COLZ");
-        canvas->Print(char_output_pdf);
+        canvas->Print(char_output_pdf, "pdf");
         hNspect_vs_ExEn                         ->Draw("COLZ");
-        canvas->Print(char_output_pdf_end);
+        canvas->Print(char_output_pdf_end, "pdf");
     }
     else {
         hPseudoRapidity_vs_A                    ->Draw("COLZ");
-        canvas->Print(char_output_pdf_end);
+        canvas->Print(char_output_pdf_end, "pdf");
     }
 
     TFile *fout = new TFile(char_output_dirname_root, "recreate");

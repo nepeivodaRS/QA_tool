@@ -232,7 +232,7 @@ void FragmentationInput_mcini_pb_sps(char* input_dirname, char* output_dirname, 
     gPad->SetTickx();
     gPad->SetTicky();
     hImpactParameter           ->Draw("COLZ");
-    canvas->Print("../output/histos/QA_dcmqgsm_sps.pdf(");
+    canvas->Print("../output/histos/QA_dcmqgsm_sps.pdf[");
 
     gPad->SetLogz();
 
@@ -331,7 +331,7 @@ void FragmentationInput_mcini_pb_sps(char* input_dirname, char* output_dirname, 
     canvas->Print("../output/histos/QA_dcmqgsm_sps.pdf");
 
     hPseudoRapidity_vs_A                 ->Draw("COLZ");
-    canvas->Print("../output/histos/QA_dcmqgsm_sps.pdf)");
+    canvas->Print("../output/histos/QA_dcmqgsm_sps.pdf]");
        
 
     TFile *fout = new TFile(output_dirname, "recreate");
