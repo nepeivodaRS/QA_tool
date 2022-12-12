@@ -1,5 +1,5 @@
 #include <string.h>
-
+R__LOAD_LIBRARY(/home/rnepeiv/inr/mcini/build/libMcIniData.so)
 
 void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const char* input_path_aamcc, string output_dirname, string root_fin_filename, string QA_filename, Int_t files)
 {

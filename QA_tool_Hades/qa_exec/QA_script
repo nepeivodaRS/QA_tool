@@ -47,5 +47,5 @@ EOF
 	echo "QA pdf calc END"
 fi
 
-open ../QA_AAMCC/output/histos/QA_$1.pdf
+xdg-open ../QA_AAMCC/output/histos/QA_$1.pdf
 

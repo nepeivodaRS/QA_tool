@@ -9,7 +9,7 @@
 #include "TLatex.h"
 #include "TMath.h"
 
-R__LOAD_LIBRARY(/Users/rnepeiv/inr/mcini/build/libMcIniData.dylib)
+R__LOAD_LIBRARY(/home/rnepeiv/inr/mcini/build/libMcIniData.so)
 
 void convertAAMCC(TString inputFileName = "particles.root", TString outputFileName = "mcini_aamcc.root",
 	Int_t aProj = -1, Int_t zProj = -1, Double_t pProj = -1, Double_t KinEn_in = -1,
