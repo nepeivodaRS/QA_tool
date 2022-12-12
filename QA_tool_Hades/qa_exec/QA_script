@@ -4,18 +4,15 @@ string2="$1_mcini.root"
 echo "Beginning of QA calculations of " $string1 " file"
 
 # You have to change it for your system
-PathToMcini="~/INR/QA_tool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="~/inr/QA_tool/QA_tool_Hades/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
-PathToDcmAamcc="~/INR/QA_tool/QA_tool_Hades/mcini_to_aamcc"
+PathToDcmAamcc="~/inr/QA_tool/QA_tool_Hades/mcini_to_aamcc"
 PathToConverterDcmAamcc="$PathToDcmAamcc/file_formation.cc"
 
-PathToQA="~/INR/QA_tool/QA_tool_Hades/QA_AAMCC"
+PathToQA="~/inr/QA_tool/QA_tool_Hades/QA_AAMCC"
 PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
 
-# Input impulse and A
-Impulse="2.4"
-MassNumber="197"
 check=0
 if [ $2 -eq $check ]; then
 	echo "mcini converter START:"
@@ -27,7 +24,7 @@ EOF
 	echo "mcini converter END"
 
 	echo "QA pdf calc START"
-	string4="($2,\"$PathToMcini/output/$string2\",\"$PathToMcini/input/$string1\",\"$PathToQA/output\", \"/$string1\", \"/QA_$1.pdf\", $3, $MassNumber, $Impulse)"
+	string4="($2,\"$PathToMcini/output/$string2\",\"$PathToMcini/input/$string1\",\"$PathToQA/output\", \"/$string1\", \"/QA_$1.pdf\", $3)"
 root -l << EOF
 .L $PathToQAscript
 FragmentationInput_mcini$string4
@@ -35,13 +32,14 @@ EOF
 	echo "QA pdf calc END"
 else
 	echo "mcini to AAMCC converter START:"
-	string3="($3,\"$PathToDcmAamcc/input\", \"$1_aamcc.root\")"
+	string3="($3,\"$PathToDcmAamcc/input\", \"$PathToDcmAamcc/output/$1Aamcc.root\")"
 root -l << EOF
 .L $PathToConverterDcmAamcc
 file_formation$string3
 EOF
+	echo "mcini to AAMCC converter END"
 	echo "QA pdf calc START"
-	string4="($2, \"$PathToDcmAamcc/input\",\"$PathToDcmAamcc/output/$1_aamcc.root\",\"$PathToQA/output\", \"/$string1\", \"/QA_$1.pdf\", $3, $MassNumber, $Impulse)"
+	string4="($2, \"$PathToDcmAamcc/input\",\"$PathToDcmAamcc/output/$1Aamcc.root\",\"$PathToQA/output\", \"/$string1\", \"/QA_$1.pdf\", $3)"
 root -l << EOF
 .L $PathToQAscript
 FragmentationInput_mcini$string4

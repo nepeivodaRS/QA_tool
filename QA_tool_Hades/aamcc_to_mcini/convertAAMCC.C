@@ -4,19 +4,14 @@
 #include "TString.h"
 #include "TTree.h"
 #include <string>
-//#include "G4Types.hh"
 
-// #include "EventInitialState.h"
-// #include "UEvent.h"
-// #include "URun.h"
-// #include "UParticle.h"
 #include "Riostream.h"
 #include "TLatex.h"
 #include "TMath.h"
 
-R__LOAD_LIBRARY(/Users/rnepeiv/INR/mcini/build/libMcIniData.dylib)
+R__LOAD_LIBRARY(/Users/rnepeiv/inr/mcini/build/libMcIniData.dylib)
 
-void convertAAMCC(TString inputFileName = "particles.root", TString outputFileName = "mcini_aamcc.root", Bool_t only_not_empty = true,
+void convertAAMCC(TString inputFileName = "particles.root", TString outputFileName = "mcini_aamcc.root",
 	Int_t aProj = -1, Int_t zProj = -1, Double_t pProj = -1, Double_t KinEn_in = -1,
 	Int_t aTarg = -1, Int_t zTarg = -1, Double_t pTarg = -1,
 	Double_t bMin = 0., Double_t bMax = 20., Int_t bWeight = 0,
@@ -24,10 +19,7 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 	Double_t sigma = 0., Int_t nEvents = 0)
 {
 
-
 	gROOT->Reset();
-
-	gSystem->Load("../build/libMcIniData.so");
 
 	TFile* fIn = new TFile(inputFileName);
 	TTree* fTreeG = (TTree*)fIn->Get("Glauber");
@@ -51,7 +43,8 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 	Int_t Npart=0, Ncoll;
 	Float_t b;
 	UInt_t id;
-	Double_t AonA, AonB, ZonA, ZonB, Energy;
+	Double_t Energy;
+	Int_t AonA, AonB, ZonA, ZonB;
 	Float_t Ecc[10];
 
 
@@ -78,10 +71,11 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 	fTreeC->SetBranchAddress("Mass_on_B", &AonB);
 	fTreeC->SetBranchAddress("Charge_on_A", &ZonA);
 	fTreeC->SetBranchAddress("Charge_on_B", &ZonB);
-	fTreeC->SetBranchAddress("Kinetic_energy_per_nucleon_of_projectile_in_GeV", &KinEn_in);
+	//fTreeC->SetBranchAddress("Kinetic_energy_per_nucleon_of_projectile_in_MeV", &KinEn_in);
 
 	fTreeC->GetEntry(0);
 
+	//KinEn_in *= pow(10, -3); // GeV
 	// In AGeV
 	pProj*= pow(10, -3)/(AonA);
 	pTarg*= pow(10, -3)/(AonB);
@@ -119,10 +113,12 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 
 		iniState->setNColl(Ncoll);
 		iniState->setNPart(Npart);
+		Int_t index = 0;
 		// Fill particle
 		for (Int_t ipart = 0; ipart < (MassOnSideA->size()); ipart++)
 		{
 			Int_t fragment_id = 0;
+
 			
 			Int_t hundreds_mass = MassOnSideA->at(ipart)/100;
 			Int_t dozens_mass = MassOnSideA->at(ipart)/10;
