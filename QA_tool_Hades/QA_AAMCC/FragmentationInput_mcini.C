@@ -54,7 +54,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     Double_t pzA = fRun->GetPTarg();
     Double_t SqrtSnn = fRun->GetNNSqrtS();
 
-    std::cout << A << " " << pzB << " " << SqrtSnn << std::endl; 
+    //std::cout << A << " " << pzB << " " << SqrtSnn << std::endl; 
 
     std::vector<float>* MassOnSideA = 0;
     Float_t b, ExEn;
@@ -167,10 +167,11 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             if (fParticle->GetPdg()>1e9 || fParticle->GetPdg()==2212 || fParticle->GetPdg()==2212){
                 hPseudoRapidityAll                          ->Fill(fMomentum.PseudoRapidity());
             }
-            if (fParticle -> T() == 1)
+            if (fParticle -> T() == 1 && fMomentum.Pz() > 0)
             {
                 if (fParticle->GetPdg()>1e9) 
                 {
+                    //std::cout << "A = " << fParticle->GetPdg()/10%1000 << " " << "Z = " << fParticle->GetPdg()/10000%1000 << std::endl;
                     hNprotons_vs_Nneutrons                  ->Fill(fParticle->GetPdg()/10%1000-fParticle->GetPdg()/10000%1000,fParticle->GetPdg()/10000%1000);
                     hNfrag                                  ->Fill(fParticle->GetPdg()/10%1000);
                     hNfrag_vs_ImpactParameter               ->Fill(fParticle->GetPdg()/10%1000, fEvent->GetB());
@@ -196,7 +197,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     if (fParticle->GetPdg()/10000%1000 > 2) Zb2+=fParticle->GetPdg()/10000%1000;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNfrag+=1;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNspect+=1;
-                    if ( fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
+                    if (fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
                         fNimf+=1;
                         hPimf->Fill(fMomentum.P()/(fParticle->GetPdg()/10%1000));
                         hPzimf->Fill(fMomentum.Pz()/(fParticle->GetPdg()/10%1000));
@@ -270,6 +271,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                 }
             }
         }
+
+        //std::cout << fNpa << " " << fNspect << std::endl;
 
         hNspect_vs_Espect_proj        ->Fill(fNspect, fEnergy);
         hNspect_vs_sumZ_proj          ->Fill(sumZ, fNspect);
