@@ -194,9 +194,9 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     fEnergy=fEnergy+fMomentum.E();
                     sumZ+=fParticle->GetPdg()/10000%1000;
                     if (fParticle->GetPdg()/10000%1000 > 2) Zb2+=fParticle->GetPdg()/10000%1000;
-                    if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10000%1000 < 198) fNfrag+=1;
-                    if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10000%1000 < 198) fNspect+=1;
-                    if ( fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
+                    if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNfrag+=1;
+                    if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNspect+=1;
+                    if ( fParticle->GetPdg()/10%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
                         fNimf+=1;
                         hPimf->Fill(fMomentum.P()/(fParticle->GetPdg()/10%1000));
                         hPzimf->Fill(fMomentum.Pz()/(fParticle->GetPdg()/10%1000));
