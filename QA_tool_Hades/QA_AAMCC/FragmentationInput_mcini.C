@@ -167,7 +167,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             if (fParticle->GetPdg()>1e9 || fParticle->GetPdg()==2212 || fParticle->GetPdg()==2212){
                 hPseudoRapidityAll                          ->Fill(fMomentum.PseudoRapidity());
             }
-            if (fParticle -> T() == 1)
+            if (fParticle -> T() == 1 && fMomentum.Pz() > 0)
             {
                 if (fParticle->GetPdg()>1e9) 
                 {

@@ -168,20 +168,20 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
-				0, 0, 0, -1,
+				0, 0, 0, 1,
 				1.);
 			else if (MassOnSideB->at(ipart) == 1 && ChargeOnSideB->at(ipart) == 1) event->AddParticle(ipart, 2212, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
-				0, 0, 0, -1,
+				0, 0, 0, 1,
 				1.);
 			else{
 				event->AddParticle(ipart, fragment_id, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
-				0, 0, 0, -1,
+				0, 0, 0, 1,
 				1.);
 			}
 		}
