@@ -11,12 +11,23 @@ void file_formation(Int_t files, const char* input_dirname, const char* output_f
   tree->Branch("impact_parameter", &btree, "impact_parameter/f");
 
   TChain* fChain=new TChain("events");
-  for (int i = 1; i <= files; i++) {fChain->Add(Form("%s/%d_mcini_.root", input_dirname, i));}
+  for (int i = 1; i <= files; i++) {fChain->Add(Form("%s/urqmd_aamcc_%d_mcini_.root", input_dirname, i));}
       //TFile* ReadFile = new TFile("../input/QA_dcmqgsm.root");
   cout<<"Number of entries equal "<<fChain->GetEntries()<<endl;
   UEvent* fEvent = new UEvent;
   EventInitialState* fIniState = new EventInitialState;
   
+  URun *fRun = new URun;
+  TFile *fIn = new TFile(Form("%s/urqmd_aamcc_1_mcini_.root", input_dirname), "read");
+  fRun = (URun *)fIn->Get("run");
+  Int_t A = fRun->GetAProj();
+  Int_t Ab = fRun->GetATarg();
+  Int_t Z = fRun->GetZProj();
+  Int_t Zb = fRun->GetZTarg();
+  Double_t pzB = fRun->GetPProj();
+  Double_t pzA = fRun->GetPTarg();
+  Double_t SqrtSnn = fRun->GetNNSqrtS();
+
   fChain->SetBranchAddress("event", &fEvent);
   fChain->SetBranchAddress("iniState", &fIniState);
       
@@ -31,8 +42,10 @@ void file_formation(Int_t files, const char* input_dirname, const char* output_f
     btree = fEvent->GetB();
     for (int j=0;j<fNpa;j++)
     {
+      if(j >= (A + Ab)) break;
       fParticle = fEvent->GetParticle(j);
-      if (fParticle -> T() == 1)
+      TLorentzVector fMomentum = fParticle->GetMomentum();
+      if (fMomentum.Pz() > 0)
       {
         if (fParticle->GetPdg()>1e9) {
           MassOnSideA.push_back(fParticle->GetPdg()/10%1000);
