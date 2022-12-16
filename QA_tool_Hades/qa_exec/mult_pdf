@@ -2,17 +2,14 @@
 echo "Beginning of QA calculations of multiple AAMCC files"
 
 # You have to change it for your system
-PathToQA="~/INR/QA_tool/QA_tool_Hades/QA_AAMCC"
+PathToQA="~/inr/QA_tool/QA_tool_Hades/QA_AAMCC"
 PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
 
-PathToMcini="~/INR/QA_tool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="~/inr/QA_tool/QA_tool_Hades/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
-Impulse="2"
-MassNumber="197"
-
 echo "QA pdf calc START"
-string4="("0", \"$PathToMcini/output\",\"$PathToMcini/input\",\"$PathToQA/output\", \"fin.root\", \"/QA_run.pdf\", $1, $MassNumber, $Impulse)"
+string4="("0", \"$PathToMcini/output\",\"$PathToMcini/input\",\"$PathToQA/output\", \"fin.root\", \"/QA_run.pdf\", $1)"
 root -l << EOF
 .L $PathToQAscript
 FragmentationInput_mcini$string4

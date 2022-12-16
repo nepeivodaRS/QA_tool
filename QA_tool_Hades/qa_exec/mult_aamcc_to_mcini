@@ -4,7 +4,7 @@ string2="$1_mcini.root"
 echo "Beginning of QA calculations of " $string1 " file"
 
 # You have to change it for your system
-PathToMcini="~/INR/QA_tool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="~/inr/QA_tool/QA_tool_Hades/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
 echo "mcini converter START:"
