@@ -151,9 +151,9 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     
     Double_t fEnergy=0;
             
-	for (long i = 0; i < lNEvents; i++)
-	{
-		if (i % 100 == 0) cout<<i<<endl;
+    for (long i = 0; i < lNEvents; i++)
+    {
+        if (i % 100 == 0) cout<<i<<endl;
         fChain->GetEntry(i);
         fEnergy=0;
         Int_t sumZ = 0, Zb2 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
@@ -171,6 +171,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             {
                 if (fParticle->GetPdg()>1e9) 
                 {
+                    //std::cout << "A = " << fParticle->GetPdg()/10%1000 << " " << "Z = " << fParticle->GetPdg()/10000%1000 << std::endl;
                     hNprotons_vs_Nneutrons                  ->Fill(fParticle->GetPdg()/10%1000-fParticle->GetPdg()/10000%1000,fParticle->GetPdg()/10000%1000);
                     hNfrag                                  ->Fill(fParticle->GetPdg()/10%1000);
                     hNfrag_vs_ImpactParameter               ->Fill(fParticle->GetPdg()/10%1000, fEvent->GetB());
@@ -196,7 +197,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     if (fParticle->GetPdg()/10000%1000 > 2) Zb2+=fParticle->GetPdg()/10000%1000;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNfrag+=1;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNspect+=1;
-                    if ( fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
+                    if (fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
                         fNimf+=1;
                         hPimf->Fill(fMomentum.P()/(fParticle->GetPdg()/10%1000));
                         hPzimf->Fill(fMomentum.Pz()/(fParticle->GetPdg()/10%1000));
@@ -271,6 +272,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             }
         }
 
+        //std::cout << fNpa << " " << fNspect << std::endl;
+
         hNspect_vs_Espect_proj        ->Fill(fNspect, fEnergy);
         hNspect_vs_sumZ_proj          ->Fill(sumZ, fNspect);
         hNspect_vs_Zb2                ->Fill(Zb2, fNspect);
@@ -291,8 +294,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hNspec_vs_Npart               ->Fill(A-fIniState->getNPart(), fIniState->getNPart());
         hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
         hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
-		
-	}
+        
+    }
     
     for(int k = 0; k < ReadFile->GetEntries(); k++){
         ReadFile->GetEntry(k);
