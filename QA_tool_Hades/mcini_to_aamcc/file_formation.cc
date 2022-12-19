@@ -28,6 +28,8 @@ void file_formation(Int_t files, const char* input_dirname, const char* output_f
   Double_t pzA = fRun->GetPTarg();
   Double_t SqrtSnn = fRun->GetNNSqrtS();
 
+  std::cout << "pzB = " << pzB << " pzA = " << pzA << " sqrtSnn = " << SqrtSnn << std::endl;
+
   fChain->SetBranchAddress("event", &fEvent);
   fChain->SetBranchAddress("iniState", &fIniState);
       
