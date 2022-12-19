@@ -112,12 +112,12 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH1F* hPseudoRapidity_nucl =                new TH1F("Eta_nucl",";Pseudorapidity (Z=1);counts",180,0,13);
     TH2F* hNprotons_vs_Nneutrons =              new TH2F("Nprotons_VS_Nneutrons",";N in fragment;Z in fragment",A-Z + 1,0,A-Z + 1,Z + 1,0,Z + 1);
     TH2F* hNfrag_vs_ImpactParameter =           new TH2F("A_VS_B",";A_{fr};b, fm",A+3,0,A+3,200,0,20);
-    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",A+3,0,A+3,5,0,5);
+    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",A+3,0,A+3,SqrtSnn*A*100,0,SqrtSnn*A+5);
     TH2F* hNfrag_vs_Energy_scaled =             new TH2F("A_VS_E_scaled",";A_{fr};E_{frag}-E_{beam}(A-1), GeV",200,0,200,150,-100,200);
     TH2F* hNfrag_vs_Rapidity =                  new TH2F("A_VS_Y",";A_{fr};Rapidity",A+3,0,A+3,500,0,3);
-    TH2F* hImpactParameter_vs_Energy_Fragment = new TH2F("B_VS_E",";b, fm;E, GeV",200,0,20,100,0,10);
+    TH2F* hImpactParameter_vs_Energy_Fragment = new TH2F("B_VS_E",";b, fm;E, GeV",200,0,20,SqrtSnn*A*100,0,SqrtSnn*A+5);
     TH2F* hImpactParameter_vs_Rapidity =        new TH2F("B_VS_Y",";b, fm;Rapidity",200,0,20,250,0,3);
-    TH2F* hRapidity_vs_Energy =                 new TH2F("Y_VS_E",";E, GeV;Rapidity",100,0,10,250,0,3);
+    TH2F* hRapidity_vs_Energy =                 new TH2F("Y_VS_E",";E, GeV;Rapidity",SqrtSnn*A*100,0,SqrtSnn*A+5,250,0,3);
     TH2F* hPseudoRapidity_vs_A =                new TH2F("Eta_VS_A",";Pseudorapidity;A",180,2,14,A+3,0,A+3);
     TH2F* hPx_vs_Py =                           new TH2F("Py_VS_Px",";Px, GeV;Py, GeV",200,-5,5,200,-4,4);
 
