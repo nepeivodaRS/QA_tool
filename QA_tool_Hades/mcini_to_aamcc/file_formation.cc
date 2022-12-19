@@ -20,7 +20,7 @@ void file_formation(Int_t files, const char* input_dirname, const char* output_f
   EventInitialState* fIniState = new EventInitialState;
   
   URun *fRun = new URun;
-  TFile *fIn = new TFile(Form("%s/urqmd_aamcc_2_mcini_.root", input_dirname), "read");
+  TFile *fIn = new TFile(Form("%s/urqmd_aamcc_1_mcini_.root", input_dirname), "read");
   fRun = (URun *)fIn->Get("run");
   Int_t A = fRun->GetAProj();
   Int_t Ab = fRun->GetATarg();
