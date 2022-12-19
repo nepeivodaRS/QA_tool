@@ -1,9 +1,8 @@
 #include <string.h>
 
-
 void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const char* input_path_aamcc, string output_dirname, string root_fin_filename, string QA_filename, Int_t files)
 {
-	TChain* fChain=new TChain("events");
+    TChain* fChain=new TChain("events");
     TChain* ReadFile = new TChain("Glauber");
     TChain* ReadFile2 = new TChain("MST-Clusters");
     URun *fRun = new URun;
@@ -68,7 +67,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     cout<<"Number of entries equal "<< fChain->GetEntries() <<endl;
     UEvent* fEvent = new UEvent;
     EventInitialState* fIniState = new EventInitialState;
-	fChain->SetBranchAddress("event", &fEvent); 
+    fChain->SetBranchAddress("event", &fEvent); 
     fChain->SetBranchAddress("iniState", &fIniState);
 
     gStyle -> SetOptStat(111);
@@ -139,16 +138,16 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hNspect_vs_ExEn  =                    new TH2F("Nspect_VS_ExEn",";Nspect;E*/A, MeV",A/2.,0,A/2.,250,0,12);
 
     TH2F* hNnucl_vs_B  =                    new TH2F("Nnucl_vs_B",";Nnucl;b, fm",A+30,0,A+30,200,0,20);    
-	
+    
     Long64_t lNEvents = fChain->GetEntries();
     Long64_t fNpa;
     UParticle* fParticle;
     
     Double_t fEnergy=0;
             
-	for (long i = 0; i < lNEvents; i++)
-	{
-		if (i % 100 == 0) cout<<i<<endl;
+    for (long i = 0; i < lNEvents; i++)
+    {
+        if (i % 100 == 0) cout<<i<<endl;
         fChain->GetEntry(i);
         fEnergy=0;
         Int_t sumZ = 0, Zb2 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
@@ -291,8 +290,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hNspec_vs_Npart               ->Fill(A-fIniState->getNPart(), fIniState->getNPart());
         hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
         hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
-		
-	}
+        
+    }
     
     for(int k = 0; k < ReadFile->GetEntries(); k++){
         ReadFile->GetEntry(k);
@@ -535,5 +534,5 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     
     //hImpactParameter_Nfrag_vs_Energy_scaled ->Write();
     
-	fout->Close();
+    fout->Close();
 }
