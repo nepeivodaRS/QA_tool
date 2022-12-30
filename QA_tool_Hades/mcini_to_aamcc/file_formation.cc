@@ -46,8 +46,8 @@ void file_formation(Int_t files, const char* input_dirname, const char* output_f
     btree = fEvent->GetB();
     for (int j=0;j<fNpa;j++)
     {
-      if(j >= (A + Ab)) break;
       fParticle = fEvent->GetParticle(j);
+      if(fParticle->GetIndex() >= (A + Ab)) continue;
       TLorentzVector fMomentum = fParticle->GetMomentum();
       if (fMomentum.Pz() > 0)
       {
