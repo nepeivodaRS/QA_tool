@@ -114,12 +114,12 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 		iniState->setNColl(Ncoll);
 		iniState->setNPart(Npart);
 		Int_t index = 0;
+		Int_t partid = 1;
 		// Fill particle
 		for (Int_t ipart = 0; ipart < (MassOnSideA->size()); ipart++)
 		{
 			Int_t fragment_id = 0;
 
-			
 			Int_t hundreds_mass = MassOnSideA->at(ipart)/100;
 			Int_t dozens_mass = MassOnSideA->at(ipart)/10;
 			Int_t hundreds_charge = ChargeOnSideA->at(ipart)/100;
@@ -129,26 +129,27 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 
 			Energy = pow(pow(pXonSideA->at(ipart) / 1000, 2) + pow(pYonSideA->at(ipart) / 1000, 2) + pow(pZonSideA->at(ipart) / 1000, 2) + pow(0.9395654 * (MassOnSideA->at(ipart) - ChargeOnSideA->at(ipart)) + 0.9382721 * ChargeOnSideA->at(ipart), 2), 0.5);
 			
-			if (MassOnSideA->at(ipart) == 1 && ChargeOnSideA->at(ipart) == 0) event->AddParticle(ipart, 2112, 0,
+			if (MassOnSideA->at(ipart) == 1 && ChargeOnSideA->at(ipart) == 0) event->AddParticle(partid, 2112, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideA->at(ipart) / 1000, pYonSideA->at(ipart) / 1000, pZonSideA->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
-			else if (MassOnSideA->at(ipart) == 1 && ChargeOnSideA->at(ipart) == 1) event->AddParticle(ipart, 2212, 0,
+			else if (MassOnSideA->at(ipart) == 1 && ChargeOnSideA->at(ipart) == 1) event->AddParticle(partid, 2212, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideA->at(ipart) / 1000, pYonSideA->at(ipart) / 1000, pZonSideA->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
 			else{
-				event->AddParticle(ipart, fragment_id, 0,
+				event->AddParticle(partid, fragment_id, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideA->at(ipart) / 1000, pYonSideA->at(ipart) / 1000, pZonSideA->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
 			}
+			partid++;
 		}
 
 		for (Int_t ipart = 0; ipart < (MassOnSideB->size()); ipart++)
@@ -164,26 +165,27 @@ void convertAAMCC(TString inputFileName = "particles.root", TString outputFileNa
 
 			Energy = pow(pow(pXonSideB->at(ipart) / 1000, 2) + pow(pYonSideB->at(ipart) / 1000, 2) + pow(pZonSideB->at(ipart) / 1000, 2) + pow(0.9395654 * (MassOnSideB->at(ipart) - ChargeOnSideB->at(ipart)) + 0.9382721 * ChargeOnSideB->at(ipart), 2), 0.5);
 			
-			if (MassOnSideB->at(ipart) == 1 && ChargeOnSideB->at(ipart) == 0) event->AddParticle(ipart, 2112, 0,
+			if (MassOnSideB->at(ipart) == 1 && ChargeOnSideB->at(ipart) == 0) event->AddParticle(partid, 2112, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
-			else if (MassOnSideB->at(ipart) == 1 && ChargeOnSideB->at(ipart) == 1) event->AddParticle(ipart, 2212, 0,
+			else if (MassOnSideB->at(ipart) == 1 && ChargeOnSideB->at(ipart) == 1) event->AddParticle(partid, 2212, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
 			else{
-				event->AddParticle(ipart, fragment_id, 0,
+				event->AddParticle(partid, fragment_id, 0,
 				0, 0,
 				0, 0, child,
 				pXonSideB->at(ipart) / 1000, pYonSideB->at(ipart) / 1000, pZonSideB->at(ipart) / 1000, Energy,
 				0, 0, 0, 1,
 				1.);
 			}
+			partid++;
 		}
 		iniTree->Fill();
 		eventCounter++;
