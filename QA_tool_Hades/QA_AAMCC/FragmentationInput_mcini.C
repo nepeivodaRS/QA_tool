@@ -68,12 +68,12 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
 
     cout<<"Number of entries equal "<< fChain->GetEntries() <<endl;
     UEvent* fEvent = new UEvent;
-    EventInitialState* fIniState = new EventInitialState;
+    // EventInitialState* fIniState = new EventInitialState;
     fChain->SetBranchAddress("event", &fEvent); 
-    fChain->SetBranchAddress("iniState", &fIniState);
+    // fChain->SetBranchAddress("iniState", &fIniState);
 
     gStyle -> SetOptStat(111);
-    //gStyle -> SetStatX (0.5);
+    gStyle -> SetStatX (0.5);
     //gStyle -> SetOptStat(0);
 
 
@@ -128,7 +128,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hNspect_vs_Zb2 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",Z + 2,0,Z + 2, A/2.+1,0,A/2.+1);
     TH2F* hNnucl_vs_Nfrag_proj =                new TH2F("Nnucl_vs_Nfrag_proj",";Nfrag;Nnucl",A/3.,0,A/3.,A/3.,0,A/3.);
 
-    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",Z + 10,0,Z + 10,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
+    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",Z + 11,-0.5,Z + 10.5,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hEnergyE_vs_Nnucl_proj =              new TH2F("EnergyE_VS_Nnucl_proj",";Nnucl;E_{event}, GeV",A+1,0,A+1,SqrtSnn*A/2 + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hEnergyE_vs_Nimf_proj =               new TH2F("EnergyE_VS_Nimf_proj",";N_{IMF};E_{event}, GeV",Int_t(A/15.),0,Int_t(A/15.),SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hImpactParameter_vs_Energy  =         new TH2F("B_VS_Energy_proj",";b, fm;E_{event}, GeV",200,0,20,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
@@ -158,7 +158,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         if (i % 100 == 0) cout<<i<<endl;
         fChain->GetEntry(i);
         fEnergy=0;
-        Int_t sumZ = 0, Zb2 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
+        Int_t sumZ = 0, sumA = 0, Zb2 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
         fNpa = fEvent->GetNpa();
         Int_t EtaLessNum = 0;
         for (int j=0;j<fNpa; j++)
@@ -167,7 +167,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             if(!fParticle) std::cout << " ERROR ";
             if(fParticle->GetIndex() > (A + Ab)) continue;
             //std::cout << fParticle->GetIndex() << std::endl;
-            fNucleon = fIniState->getNucleon(fParticle->GetIndex());
+            //fNucleon = fIniState->getNucleon(fParticle->GetIndex());
             TLorentzVector fMomentum = fParticle->GetMomentum();
             if(abs(fMomentum.PseudoRapidity()) < 1.){
                 EtaLessNum += 1;
@@ -202,6 +202,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     hPseudoRapidity_vs_A                    ->Fill(fMomentum.PseudoRapidity(),fParticle->GetPdg()/10%1000);
                     fEnergy=fEnergy+fMomentum.E();
                     sumZ+=fParticle->GetPdg()/10000%1000;
+                    sumA+=fParticle->GetPdg()/10%1000;
                     // X vs Y
                     hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
 
@@ -247,23 +248,24 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     hPseudoRapidity_vs_A                    ->Fill(fMomentum.PseudoRapidity(),1);
                     fEnergy=fEnergy+fMomentum.E();
                     // X vs Y
-                    hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    if(fNucleon.getCollisionType() == 0){
-                        hFragX_vs_Y_0                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 1){
-                        hFragX_vs_Y_1                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 2){
-                        hFragX_vs_Y_2                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 3){
-                        hFragX_vs_Y_3                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 4){
-                        hFragX_vs_Y_4                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
+                    // hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // if(fNucleon.getCollisionType() == 0){
+                    //     hFragX_vs_Y_0                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 1){
+                    //     hFragX_vs_Y_1                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 2){
+                    //     hFragX_vs_Y_2                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 3){
+                    //     hFragX_vs_Y_3                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 4){
+                    //     hFragX_vs_Y_4                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
                     sumZ+=1;
+                    sumA+=1;
                     fNnucl +=1;
                     fNspect+=1;
                 }
@@ -294,23 +296,24 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     hPseudoRapidity_nucl                    ->Fill(fMomentum.PseudoRapidity());
                     hPseudoRapidity_vs_A                    ->Fill(fMomentum.PseudoRapidity(),1);
                     fEnergy=fEnergy+fMomentum.E();
+                    sumA+=1;
                     // X vs Y
-                    hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    if(fNucleon.getCollisionType() == 0){
-                        hFragX_vs_Y_0                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 1){
-                        hFragX_vs_Y_1                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 2){
-                        hFragX_vs_Y_2                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 3){
-                        hFragX_vs_Y_3                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
-                    if(fNucleon.getCollisionType() == 4){
-                        hFragX_vs_Y_4                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
-                    }
+                    // hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // if(fNucleon.getCollisionType() == 0){
+                    //     hFragX_vs_Y_0                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 1){
+                    //     hFragX_vs_Y_1                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 2){
+                    //     hFragX_vs_Y_2                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 3){
+                    //     hFragX_vs_Y_3                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
+                    // if(fNucleon.getCollisionType() == 4){
+                    //     hFragX_vs_Y_4                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
+                    // }
                     fNnucl+=1;
                     fNspect+=1;
                 }
@@ -340,15 +343,16 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hEnergy                       ->Fill(fEnergy);
         hImpactParameter_vs_Energy    ->Fill(fEvent->GetB(), fEnergy);
         hImpactParameter              ->Fill(fEvent->GetB());
-        hNpart                        ->Fill(fIniState->getNPart());
-        hNspec                        ->Fill(A-fIniState->getNPart());
-        hNcoll                        ->Fill(fIniState->getNColl());
-        hNpart_vs_ImpactParameter     ->Fill(fIniState->getNPart(), fEvent->GetB());
-        hNspec_vs_ImpactParameter     ->Fill(A-fIniState->getNPart(), fEvent->GetB());
-        hNcoll_vs_ImpactParameter     ->Fill(fIniState->getNColl(), fEvent->GetB());
-        hNspec_vs_Npart               ->Fill(A-fIniState->getNPart(), fIniState->getNPart());
-        hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
-        hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
+        // hNpart                        ->Fill(fIniState->getNPart());
+        // hNspec                        ->Fill(A-fIniState->getNPart());
+        // hNcoll                        ->Fill(fIniState->getNColl());
+        // hNpart_vs_ImpactParameter     ->Fill(fIniState->getNPart(), fEvent->GetB());
+        // hNspec_vs_ImpactParameter     ->Fill(A-fIniState->getNPart(), fEvent->GetB());
+        // hNcoll_vs_ImpactParameter     ->Fill(fIniState->getNColl(), fEvent->GetB());
+        // hNspec_vs_Npart               ->Fill(A-fIniState->getNPart(), fIniState->getNPart());
+        // hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
+        // hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
+        hImpactParameter_vs_A  -> Fill(fEvent->GetB(), double(sumA)/A);
     }
     
     for(int k = 0; k < ReadFile->GetEntries(); k++){
@@ -366,7 +370,6 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             hImpactParameter_vs_ExEn -> Fill(b, ExEn);
             hImpactParameter_vs_d -> Fill (b, crd);
         }
-        hImpactParameter_vs_A  -> Fill(b, double(sumA_proj)/A);
     }
 
     // Converter from string to char
@@ -523,6 +526,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     canvas->Print(char_output_pdf, "pdf");
     hRapidity_vs_Energy                         ->Draw("COLZ");
     canvas->Print(char_output_pdf, "pdf");
+    hImpactParameter_vs_A                   ->Draw("COLZ");
+    canvas->Print(char_output_pdf, "pdf");
 
     // hFragX_vs_Y                           ->Draw("COLZ");
     // canvas->Print(char_output_pdf, "pdf");
@@ -547,8 +552,6 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hImpactParameter_vs_ExEn                ->Draw("COLZ");
         canvas->Print(char_output_pdf, "pdf");
         hImpactParameter_vs_d                   ->Draw("COLZ");
-        canvas->Print(char_output_pdf, "pdf");
-        hImpactParameter_vs_A                   ->Draw("COLZ");
         canvas->Print(char_output_pdf, "pdf");
         hRelA_vs_ExEn                           ->Draw("COLZ");
         canvas->Print(char_output_pdf, "pdf");
