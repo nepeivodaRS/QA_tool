@@ -4,13 +4,13 @@ string2="$1_mcini.root"
 echo "Beginning of QA calculations of " $string1 " file"
 
 # You have to change it for your system
-PathToMcini="~/inr/QA_tool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="/Users/rnepeiv/workINR/QA_tool/QA_tool_Hades/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
-PathToDcmAamcc="~/inr/QA_tool/QA_tool_Hades/mcini_to_aamcc"
+PathToDcmAamcc="/Users/rnepeiv/workINR/QA_tool/QA_tool_Hades/mcini_to_aamcc"
 PathToConverterDcmAamcc="$PathToDcmAamcc/file_formation.cc"
 
-PathToQA="~/inr/QA_tool/QA_tool_Hades/QA_AAMCC"
+PathToQA="/Users/rnepeiv/workINR/QA_tool/QA_tool_Hades/QA_AAMCC"
 PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
 
 check=0
