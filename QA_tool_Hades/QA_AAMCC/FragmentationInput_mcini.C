@@ -72,7 +72,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     fChain->SetBranchAddress("event", &fEvent); 
     // fChain->SetBranchAddress("iniState", &fIniState);
 
-    gStyle -> SetOptStat(111);
+    gStyle -> SetOptStat(0);
     gStyle -> SetStatX (0.5);
     //gStyle -> SetOptStat(0);
 
@@ -112,10 +112,10 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH1F* hPseudoRapidityAll =                  new TH1F("Eta_all",";Pseudorapidity: target+projectile;counts",280,-14,14);
     TH1F* hPseudoRapidity_nucl =                new TH1F("Eta_nucl",";Pseudorapidity (Z=1);counts",180,0,13);
     TH2F* hNprotons_vs_Nneutrons =              new TH2F("Nprotons_VS_Nneutrons",";N in fragment;Z in fragment",A-Z + 1,0,A-Z + 1,Z + 1,0,Z + 1);
-    TH2F* hNfrag_vs_ImpactParameter =           new TH2F("A_VS_B",";A_{fr};b, fm",A+3,0,A+3,200,0,20);
-    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",A+3,0,A+3,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
+    TH2F* hNfrag_vs_ImpactParameter =           new TH2F("A_VS_B",";A_{fr};b, fm",A+4,-0.5,A+3.5,200,0,20);
+    TH2F* hNfrag_vs_Energy =                    new TH2F("A_VS_E",";A_{fr};E_{frag}, GeV",A+4,-0.5,A+3.5,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hNfrag_vs_Energy_scaled =             new TH2F("A_VS_E_scaled",";A_{fr};E_{frag}-E_{beam}(A-1), GeV",200,0,200,150,-100,200);
-    TH2F* hNfrag_vs_Rapidity =                  new TH2F("A_VS_Y",";A_{fr};Rapidity",A+3,0,A+3,500,0,3);
+    TH2F* hNfrag_vs_Rapidity =                  new TH2F("A_VS_Y",";A_{fr};Rapidity",A+4,-0.5,A+3.5,500,0,3);
     TH2F* hImpactParameter_vs_Energy_Fragment = new TH2F("B_VS_E",";b, fm;E_{frag}, GeV",200,0,20,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hImpactParameter_vs_Rapidity =        new TH2F("B_VS_Y",";b, fm;Rapidity",200,0,20,250,0,3);
     TH2F* hRapidity_vs_Energy =                 new TH2F("Y_VS_E",";E_{frag}, GeV;Rapidity",SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50,250,0,3);
@@ -124,22 +124,22 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
 
     TH2F* hEnergyA_vs_ImpactParameter_proj =    new TH2F("EperA_VS_B_proj",";b, fm;E_{frag}/A, GeV",200,0,20,SqrtSnn*100,0,SqrtSnn);
     TH2F* hNspect_vs_Espect_proj =              new TH2F("Espect_VS_Nspect_proj",";Nspect;E_{event}, GeV",A,0,A,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
-    TH2F* hNspect_vs_sumZ_proj =                new TH2F("sumZ_VS_Nspect_proj",";sumZ;Nspect",Z + 2,0,Z + 2, A/2. + 1,0,A/2. + 1);
-    TH2F* hNspect_vs_Zb2 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",Z + 2,0,Z + 2, A/2.+1,0,A/2.+1);
-    TH2F* hNnucl_vs_Nfrag_proj =                new TH2F("Nnucl_vs_Nfrag_proj",";Nfrag;Nnucl",A/3.,0,A/3.,A/3.,0,A/3.);
+    TH2F* hNspect_vs_sumZ_proj =                new TH2F("sumZ_VS_Nspect_proj",";sumZ;Nspect",Z + 3,-0.5,Z + 2.5, A/2. + 2,-0.5,A/2. + 1.5);
+    TH2F* hNspect_vs_Zb2 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",Z + 3,-0.5,Z + 3, A/2.+2,-0.5,A/2.+1.5);
+    TH2F* hNnucl_vs_Nfrag_proj =                new TH2F("Nnucl_vs_Nfrag_proj",";Nfrag;Nnucl",A/3. + 1,-0.5,A/3.+0.5,A/3. + 1,-0.5,A/3.+0.5);
 
-    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",Z + 11,-0.5,Z + 10.5,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
-    TH2F* hEnergyE_vs_Nnucl_proj =              new TH2F("EnergyE_VS_Nnucl_proj",";Nnucl;E_{event}, GeV",A+1,0,A+1,SqrtSnn*A/2 + 50,0,SqrtSnn*A/2. + 50);
-    TH2F* hEnergyE_vs_Nimf_proj =               new TH2F("EnergyE_VS_Nimf_proj",";N_{IMF};E_{event}, GeV",Int_t(A/15.),0,Int_t(A/15.),SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
+    TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",Z + 11,-0.5,Z + 10.5,250,0,SqrtSnn*A/2. + 50);
+    TH2F* hEnergyE_vs_Nnucl_proj =              new TH2F("EnergyE_VS_Nnucl_proj",";Nnucl;E_{event}, GeV",A+2,-0.5,A+1.5,250,0,SqrtSnn*A/2. + 50);
+    TH2F* hEnergyE_vs_Nimf_proj =               new TH2F("EnergyE_VS_Nimf_proj",";N_{IMF};E_{event}, GeV",16,-0.5,15+0.5,250,0,SqrtSnn*A/2. + 50);
     TH2F* hImpactParameter_vs_Energy  =         new TH2F("B_VS_Energy_proj",";b, fm;E_{event}, GeV",200,0,20,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
 
     TH2F* hImpactParameter_vs_ExEn  =           new TH2F("B_VS_ExEn",";b, fm;E*/A_{pf}, MeV",200,0,20,250,0,12);
     TH2F* hImpactParameter_vs_d  =              new TH2F("B_VS_d",";b, fm; d, fm",200,0,20,200,1.,3.);
-    TH2F* hImpactParameter_vs_A  =              new TH2F("B_VS_A_{pf}/A",";b, fm; A_{pf}/A",200,0,20,198,0,1);
+    TH2F* hImpactParameter_vs_A  =              new TH2F("B_VS_A_{pf}/A",";b, fm; A_{pf}/A",200,0,20,50,0,1);
     TH2F* hRelA_vs_ExEn  =                      new TH2F("ApfA_VS_ExEn",";E*/A_{pf}, MeV; A_{pf}/A",360,0,12,198,0,1);
-    TH2F* hNspect_vs_ExEn  =                    new TH2F("Nspect_VS_ExEn",";Nspect;E*/A, MeV",A/2.,0,A/2.,250,0,12);
+    TH2F* hNspect_vs_ExEn  =                    new TH2F("Nspect_VS_ExEn",";Nspect;E*/A, MeV",A/2. + 1,-0.5,A/2.+0.5,250,0,12);
 
-    TH2F* hNnucl_vs_B  =                    new TH2F("Nnucl_vs_B",";Nnucl;b, fm",A/2.+20,0,A/2.+20,200,0,20);
+    TH2F* hNnucl_vs_B  =                    new TH2F("Nnucl_vs_B",";Nnucl;b, fm",A/2.+21,-0.5,A/2.+20.5,200,0,20);
     TH2F* hFragX_vs_Y  =                    new TH2F("FragX_vs_Y",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_0  =                    new TH2F("FragX_vs_Y_0",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_1  =                    new TH2F("FragX_vs_Y_1",";X, fm;Y, fm",100,-50,50,100,-50,50);
@@ -352,7 +352,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         // hNspec_vs_Npart               ->Fill(A-fIniState->getNPart(), fIniState->getNPart());
         // hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
         // hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
-        hImpactParameter_vs_A  -> Fill(fEvent->GetB(), double(sumA)/A);
+        hImpactParameter_vs_A  -> Fill(fEvent->GetB(), double(sumA)/double(A));
     }
     
     for(int k = 0; k < ReadFile->GetEntries(); k++){
