@@ -9,6 +9,6 @@ to your system path
 
 3. in mcini_to_aamcc/file_formation.cc and QA_AAMCC/FragmentationInput_mcini.cc change R__LOAD_LIBRARY path to your libMcIniData location
 
-4. Isnatll Tkinter: apt-get install python3-tk
+4. Install Tkinter: apt-get install python3-tk
 5. Run QA tool in qa_exec folder by
 python3.9 AAMCC_run.py
