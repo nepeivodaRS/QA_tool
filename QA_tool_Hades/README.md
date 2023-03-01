@@ -1,4 +1,4 @@
-# QA tool analysis of AAMCC or DCM root files
+# QA tool analysis of AAMCC or MCINI root files
 
 1. go to qa_exec folder
 
