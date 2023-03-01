@@ -30,7 +30,7 @@ class Window:
 
         self.bg = PhotoImage( file = "./aamcc.png")
         self.bg = self.bg.subsample(10, 10)  
-        self.aamccbutton= Button(root, image=self.bg, command= self.my_command, borderwidth=0)
+        self.aamccbutton= Button(root, image=self.bg, command= self.goToAAMMCCgit, borderwidth=0)
         self.aamccbutton.grid(row=4, column=3, sticky = W + E)
 
         self.text = Text(width=50, height=10)
@@ -40,7 +40,7 @@ class Window:
         self.var.set(0) # Default is AAMCC
         self.aamcc_tick = Radiobutton(root, text="AAMCC", variable=self.var, value=0)
         self.aamcc_tick.grid(row=2, column=1)
-        self.dcmsmm_tick = Radiobutton(root, text="DCMSMM", variable=self.var, value=1)
+        self.dcmsmm_tick = Radiobutton(root, text="MCINI", variable=self.var, value=1)
         self.dcmsmm_tick.grid(row=2, column=2)
 
         self.reset()
@@ -77,7 +77,7 @@ class Window:
                             self.bar.delete(0, 'end')
                             self.bar.insert(0, 'BAD FILE')
                             self.text.delete('1.0', END)
-                            self.text.insert(1.0, "please select files again, bad file was found")
+                            self.text.insert(1.0, "please, select files again, bad file was found")
                             break;
                 else:
                     for i in self.file:
@@ -90,7 +90,7 @@ class Window:
                             self.bar.delete(0, 'end')
                             self.bar.insert(0, 'BAD FILE')
                             self.text.delete('1.0', END)
-                            self.text.insert(1.0, "please select files again, bad file was found")
+                            self.text.insert(1.0, "please, select files again, bad file was found")
                             break;
                     sub.call(['./mult_pdf', str(len(self.file))])
 
@@ -113,9 +113,9 @@ class Window:
         self.bar.delete(0, 'end')
         self.bar.insert(0, 'no file')
         self.text.delete('1.0', END)
-        self.text.insert(1.0, "\n note that your input files must be located in \n AAMCC: ../aamcc_to_mcini/input \n DCMSMM: ../mcini_to_aamcc/input \n")
+        self.text.insert(1.0, "\n note that your input files must be located in \n AAMCC: ../aamcc_to_mcini/input \n MCINI: ../mcini_to_aamcc/input \n")
         self.text.insert(1.0, "Before usage please change \n PathToMcini, PathToDcmAamcc, PathToQA variables \n to your system paths in \"QA_script\" \n")
-    def my_command(self):
+    def goToAAMMCCgit(self):
        webbrowser.open('https://github.com/Spectator-matter-group-INR-RAS/AAMCC')
     def endProgam(self):
         root.destroy()  
