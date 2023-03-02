@@ -4,10 +4,10 @@ echo "Beginning of QA calculations of multiple AAMCC files"
 # You have to change it for your system
 PathToQAtool="~/inr/QA_tool"
 
-PathToQA="$PathToQAtool/QA_tool_Hades/QA_AAMCC"
+PathToQA="$PathToQAtool/QA_tool_NICA/QA_AAMCC"
 PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
 
-PathToMcini="$PathToQAtool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="$PathToQAtool/QA_tool_NICA/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
 Impulse="2"

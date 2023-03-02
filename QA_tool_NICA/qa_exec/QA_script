@@ -6,13 +6,13 @@ echo "Beginning of QA calculations of " $string1 " file"
 # You have to change it for your system
 PathToQAtool="~/inr/QA_tool"
 
-PathToMcini="$PathToQAtool/QA_tool_Hades/aamcc_to_mcini"
+PathToMcini="$PathToQAtool/QA_tool_NICA/aamcc_to_mcini"
 PathToConverterMcini="$PathToMcini/convertAAMCC.C"
 
-PathToDcmAamcc="$PathToQAtool/QA_tool_Hades/mcini_to_aamcc"
+PathToDcmAamcc="$PathToQAtool/QA_tool_NICA/mcini_to_aamcc"
 PathToConverterDcmAamcc="$PathToDcmAamcc/file_formation.cc"
 
-PathToQA="$PathToQAtool/QA_tool_Hades/QA_AAMCC"
+PathToQA="$PathToQAtool/QA_tool_NICA/QA_AAMCC"
 PathToQAscript="$PathToQA/FragmentationInput_mcini.C"
 
 check=0
