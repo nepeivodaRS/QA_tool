@@ -71,7 +71,7 @@ class Window:
                         file_extension = os.path.splitext(i)[1]
                         if (file_extension == ".root"):
                             file_extension = os.path.splitext(i)[1]
-                            sub.call(['/home/rnepeiv/inr/QA_tool/QA_tool_Hades/qa_exec/QA_script', Path(i).stem, str(self.var.get()), str(1)])
+                            sub.call(['/home/rnepeiv/inr/QA_tool/QA_tool_NICA/qa_exec/QA_script', Path(i).stem, str(self.var.get()), str(1)])
                             self.text.insert(1.0, Path(i).stem + ".root" + " done 100%" + "\t\n")
                         else:
                             self.bar.delete(0, 'end')
