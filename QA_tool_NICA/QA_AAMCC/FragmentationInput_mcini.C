@@ -125,7 +125,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hEnergyA_vs_ImpactParameter_proj =    new TH2F("EperA_VS_B_proj",";b, fm;E_{frag}/A, GeV",200,0,20,SqrtSnn*100,0,SqrtSnn);
     TH2F* hNspect_vs_Espect_proj =              new TH2F("Espect_VS_Nspect_proj",";Nspect;E_{event}, GeV",A,0,A,SqrtSnn*A/2. + 50,0,SqrtSnn*A/2. + 50);
     TH2F* hNspect_vs_sumZ_proj =                new TH2F("sumZ_VS_Nspect_proj",";sumZ;Nspect",Z + 3,-0.5,Z + 2.5, A/2. + 2,-0.5,A/2. + 1.5);
-    TH2F* hNspect_vs_Zb2 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",Z + 3,-0.5,Z + 3, A/2.+2,-0.5,A/2.+1.5);
+    TH2F* hNspect_vs_Zb3 =                      new TH2F("Zb3_VS_Nspect_proj",";Zb3;Nspect",Z + 3,-0.5,Z + 3, A/2.+2,-0.5,A/2.+1.5);
     TH2F* hNnucl_vs_Nfrag_proj =                new TH2F("Nnucl_vs_Nfrag_proj",";Nfrag;Nnucl",A/3. + 1,-0.5,A/3.+0.5,A/3. + 1,-0.5,A/3.+0.5);
 
     TH2F* hEnergyE_vs_sumZ_proj =               new TH2F("EnergyE_VS_sumZ_proj",";sumZ;E_{event}, GeV",Z + 11,-0.5,Z + 10.5,250,0,SqrtSnn*A/2. + 50);
@@ -146,7 +146,9 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hFragX_vs_Y_2  =                    new TH2F("FragX_vs_Y_2",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_3  =                    new TH2F("FragX_vs_Y_3",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_4  =                    new TH2F("FragX_vs_Y_4",";X, fm;Y, fm",100,-50,50,100,-50,50);
-    
+    TH2F* hZb3_vs_ImpactParameter  =		new TH2F("Zb3_vs_ImpactParameter", ";Zb3;b, fm", Z+3.5, -0.5, Z + 4, 200, 0, 20);
+    TH2F* hZb3_vs_A =				new TH2F("Zb3_vs_A_{pf}/A", ";Zb3; A_{pf}/A", Z + 3.5, -0.5, Z + 4, 198, 0, 1);
+
     Long64_t lNEvents = fChain->GetEntries();
     Long64_t fNpa;
     UParticle* fParticle;
@@ -158,7 +160,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         if (i % 100 == 0) cout<<i<<endl;
         fChain->GetEntry(i);
         fEnergy=0;
-        Int_t sumZ = 0, sumA = 0, Zb2 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
+        Int_t sumZ = 0, sumA = 0, Zb3 = 0, fNnucl = 0, fNfrag = 0, fNimf = 0, fNspect = 0;
         fNpa = fEvent->GetNpa();
         Int_t EtaLessNum = 0;
         for (int j=0;j<fNpa; j++)
@@ -166,6 +168,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             fParticle = fEvent->GetParticle(j);
             if(!fParticle) std::cout << " ERROR ";
             if(fParticle->GetIndex() > (A + Ab)) continue;
+	    if((fParticle->GetStatus() != 0 || fParticle->GetParent() != 0)) continue;
             //std::cout << fParticle->GetIndex() << std::endl;
             //fNucleon = fIniState->getNucleon(fParticle->GetIndex());
             TLorentzVector fMomentum = fParticle->GetMomentum();
@@ -206,7 +209,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
                     // X vs Y
                     hFragX_vs_Y                             ->Fill(fParticle->GetPosition().X(), fParticle->GetPosition().Y());
 
-                    if (fParticle->GetPdg()/10000%1000 > 2) Zb2+=fParticle->GetPdg()/10000%1000;
+                    if (fParticle->GetPdg()/10000%1000 >= 3) Zb3+=fParticle->GetPdg()/10000%1000;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNfrag+=1;
                     if (fParticle->GetPdg()/10000%1000 < 80 && fParticle->GetPdg()/10%1000 < 198) fNspect+=1;
                     if (fParticle->GetPdg()/10000%1000 <= 30 && fParticle->GetPdg()/10000%1000 >=3){
@@ -333,11 +336,12 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         hNnucl_vs_B                   ->Fill(fNnucl, fEvent->GetB());
         hNspect_vs_Espect_proj        ->Fill(fNspect, fEnergy);
         hNspect_vs_sumZ_proj          ->Fill(sumZ, fNspect);
-        hNspect_vs_Zb2                ->Fill(Zb2, fNspect);
+        hNspect_vs_Zb3                ->Fill(Zb3, fNspect);
         hNnucl_vs_Nfrag_proj          ->Fill (fNfrag, fNnucl);
         hEnergyE_vs_sumZ_proj         ->Fill (sumZ, fEnergy);
         hEnergyE_vs_Nnucl_proj        ->Fill (fNnucl, fEnergy);
         hEnergyE_vs_Nimf_proj         ->Fill (fNimf, fEnergy);
+	hZb3_vs_ImpactParameter	->Fill(Zb3, fEvent->GetB());
 
         //std::cout << " Total energy: " << fEnergy << std::endl;
         hEnergy                       ->Fill(fEnergy);
@@ -353,6 +357,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
         // hNspec_vs_Ncoll               ->Fill(A-fIniState->getNPart(), fIniState->getNColl());
         // hNpart_vs_Ncoll               ->Fill(fIniState->getNPart(), fIniState->getNColl());
         hImpactParameter_vs_A  -> Fill(fEvent->GetB(), double(sumA)/double(A));
+	hZb3_vs_A	       -> Fill(Zb3, double(sumA)/double(A));
     }
     
     for(int k = 0; k < ReadFile->GetEntries(); k++){
@@ -423,7 +428,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     hNspect_vs_sumZ_proj                        ->Draw("COLZ");
     canvas->Print(char_output_pdf,"pdf");
 
-    hNspect_vs_Zb2                              ->Draw("COLZ");
+    hNspect_vs_Zb3                              ->Draw("COLZ");
     canvas->Print(char_output_pdf,"pdf");
 
     
@@ -528,7 +533,10 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     canvas->Print(char_output_pdf, "pdf");
     hImpactParameter_vs_A                   ->Draw("COLZ");
     canvas->Print(char_output_pdf, "pdf");
-
+    hZb3_vs_A                   ->Draw("COLZ");
+    canvas->Print(char_output_pdf, "pdf");
+    hZb3_vs_ImpactParameter                   ->Draw("COLZ");
+    canvas->Print(char_output_pdf, "pdf");
     // hFragX_vs_Y                           ->Draw("COLZ");
     // canvas->Print(char_output_pdf, "pdf");
     // hFragX_vs_Y_0                           ->Draw("COLZ");
@@ -593,7 +601,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     hPT_vs_A                             ->Write();
     hPz_vs_A                             ->Write();
     hP_vs_A                              ->Write();
-    hNspect_vs_Zb2                       ->Write();
+    hNspect_vs_Zb3                       ->Write();
 
 
     hEnergyA_vs_ImpactParameter_proj     ->Write();
@@ -601,7 +609,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     hNspect_vs_Espect_proj               ->Write();
    //hNspect_vs_Espect_targ                ->Write();
     hNspect_vs_sumZ_proj                 ->Write();
-    hNspect_vs_Zb2                       ->Write();
+    hNspect_vs_Zb3                       ->Write();
     hNnucl_vs_Nfrag_proj                 ->Write();
     hEnergyE_vs_sumZ_proj                ->Write();
     hEnergyE_vs_Nnucl_proj               ->Write();
