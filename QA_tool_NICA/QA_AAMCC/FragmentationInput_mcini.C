@@ -146,8 +146,8 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
     TH2F* hFragX_vs_Y_2  =                    new TH2F("FragX_vs_Y_2",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_3  =                    new TH2F("FragX_vs_Y_3",";X, fm;Y, fm",100,-50,50,100,-50,50);
     TH2F* hFragX_vs_Y_4  =                    new TH2F("FragX_vs_Y_4",";X, fm;Y, fm",100,-50,50,100,-50,50);
-    TH2F* hZb3_vs_ImpactParameter  =		new TH2F("Zb3_vs_ImpactParameter", ";Zb3;b, fm", Z+3, -0.5, Z + 3, 200, 0, 20);
-    TH2F* hZb3_vs_A =				new TH2F("Zb3_vs_A_{pf}/A", ";Zb3; A_{pf}/A", Z + 3, -0.5, Z + 3, 198, 0, 1);
+    TH2F* hZb3_vs_ImpactParameter  =		new TH2F("Zb3_vs_ImpactParameter", ";Zb3;b, fm", Z+3.5, -0.5, Z + 4, 200, 0, 20);
+    TH2F* hZb3_vs_A =				new TH2F("Zb3_vs_A_{pf}/A", ";Zb3; A_{pf}/A", Z + 3.5, -0.5, Z + 4, 198, 0, 1);
 
     Long64_t lNEvents = fChain->GetEntries();
     Long64_t fNpa;
@@ -168,6 +168,7 @@ void FragmentationInput_mcini(int flag_dcm, const char* input_path_mcini, const 
             fParticle = fEvent->GetParticle(j);
             if(!fParticle) std::cout << " ERROR ";
             if(fParticle->GetIndex() > (A + Ab)) continue;
+	    if((fParticle->GetStatus() != 0 || fParticle->GetParent() != 0)) continue;
             //std::cout << fParticle->GetIndex() << std::endl;
             //fNucleon = fIniState->getNucleon(fParticle->GetIndex());
             TLorentzVector fMomentum = fParticle->GetMomentum();
