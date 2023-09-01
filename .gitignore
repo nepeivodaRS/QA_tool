@@ -36,3 +36,4 @@
 
 # pdf files
 *.pdf
+.DS_Store
